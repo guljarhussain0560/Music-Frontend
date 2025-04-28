@@ -1,0 +1,11 @@
+@keyframes backgroundScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-20%);
+  }
+}
+.animate-backgroundScroll {
+  animation: backgroundScroll 20s linear infinite alternate;
+}
