@@ -1,19 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-//wrap the entire application by context provider so that we can access value anywhere in our project without any props drellings
-import { ContextProvider } from "./components/store/ContextApi";
+import "./index.css"; // TailwindCSS
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <ContextProvider>
-    <App />
-  </ContextProvider>
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId="502237455221-5pgsj6u5avmp1lae1jr1f68hseq5s0c1.apps.googleusercontent.com">
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

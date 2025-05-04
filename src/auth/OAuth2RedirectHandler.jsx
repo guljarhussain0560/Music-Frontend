@@ -1,0 +1,46 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const OAuth2RedirectHandler = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      // Store the token in localStorage
+      localStorage.setItem("JWT_TOKEN", token);
+
+      // ✅ Immediately fetch user info using the token
+      fetch("http://localhost:8080/api/auth/me", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch user");
+          return res.json();
+        })
+        .then((user) => {
+          console.log("Logged-in user:", user);
+          // You can store user info in state, context, or Redux
+          localStorage.setItem("USER_DETAILS", JSON.stringify(user)); // Store user details
+          navigate("/home"); // go to home or dashboard
+        })
+        .catch((err) => {
+          console.error("User fetch failed", err);
+          navigate("/login?error=auth_failed");
+        });
+    } else {
+      navigate("/login?error=missing_token");
+    }
+
+    setLoading(false);
+  }, [navigate]);
+
+  return <div>{loading ? "Signing in..." : "Redirecting..."}</div>;
+};
+
+export default OAuth2RedirectHandler;

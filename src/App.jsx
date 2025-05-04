@@ -1,50 +1,38 @@
-
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import ProtectedRoute from "./components/ProtectedRoute";
-import LandingPage from "./components/LandingPageCom/Home";
-import AccessDenied from "./components/auth/AccessDenied";
-import UserProfile from "./components/auth/UserProfile";
-import ForgotPassword from "./components/auth/ForgotPassword";
-import OAuth2RedirectHandler from "./components/auth/OAuth2RedirectHandler";
-import { Toaster } from "react-hot-toast";
-import NotFound from "./components/NotFound";
-import ContactPage from "./components/contactPage/ContactPage";
-import AboutPage from "./components/aboutPage/AboutPage";
-import ResetPassword from "./components/auth/ResetPassword";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Home from "./components/pages/Home";
+import HomeAfterLogin from "./components/pages/HomeAfterLogin";
+import SignInPage from "./auth/SignInPage";
+import SignUpPage from "./auth/SignUpPage";
+import OAuth2RedirectHandler from "./auth/OAuth2RedirectHandler";
 import Footer from "./components/footer/Footer";
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // On component mount, check for JWT token in localStorage
+  useEffect(() => {
+    const token = localStorage.getItem("JWT_TOKEN");
+    setIsAuthenticated(!!token); // Set to true if token exists, false otherwise
+  }, []);
+
   return (
-    <Router>
-      <Navbar />
-      <Toaster position="bottom-center" reverseOrder={false} />
-      <Routes>
-        <Route path="/Home" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/signin" element={<SignInPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
 
-        <Route path="/access-denied" element={<AccessDenied />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+      {/* Protected Route */}
+      <Route
+        path="/home"
+        element={isAuthenticated ? <HomeAfterLogin /> : <Navigate to="/signin" />}
+      />
+      <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </Router>
+      {/* Catch-all Route */}
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 };
 

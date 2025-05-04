@@ -16,7 +16,7 @@ const AboutPage = () => {
         <h1 className="text-4xl font-bold mb-4">About Us</h1>
         <p className="mb-4">
           Welcome to{" "}
-          <span className="font-semibold text-blue-600">Harmony Hub</span> —
+          <span className="font-semibold text-blue-600">Music Vibes</span> —
           your ultimate destination for discovering music that resonates with
           you. Our platform uses cutting-edge technology to suggest songs based
           on your mood, images, and experiences. Whether you're seeking a
@@ -61,3 +61,5 @@ const AboutPage = () => {
     </div>
   );
 };
+
+export default AboutPage;
