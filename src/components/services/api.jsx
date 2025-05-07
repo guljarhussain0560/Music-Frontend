@@ -1,34 +1,31 @@
 import axios from "axios";
 
+// Axios instance without interceptors
+const plainAxios = axios.create();
 
-// Set default config to include cookies (needed for CSRF protection)
-axios.defaults.withCredentials = true;
-
-// Create an axios instance
+// Axios instance with interceptors
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_DOMAIN}/api`, // Make sure VITE_BACKEND_DOMAIN is set correctly in your .env file
+  baseURL: `${import.meta.env.VITE_BACKEND_DOMAIN}/api`,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  withCredentials: true, // Ensures cookies are sent with every request
+  withCredentials: true,
 });
 
-// Add a request interceptor
 api.interceptors.request.use(
   async (config) => {
-    // Include JWT token if available
+    // JWT Token
     const token = localStorage.getItem("JWT_TOKEN");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    // Include CSRF token if available, else fetch it
+    // CSRF Token
     let csrfToken = localStorage.getItem("CSRF_TOKEN");
-
     if (!csrfToken) {
       try {
-        const response = await axios.get(
+        const response = await plainAxios.get(
           `${import.meta.env.VITE_BACKEND_DOMAIN}/api/csrf-token`,
           { withCredentials: true }
         );
@@ -46,9 +43,7 @@ api.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;

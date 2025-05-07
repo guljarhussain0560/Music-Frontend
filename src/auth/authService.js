@@ -1,23 +1,15 @@
 import axios from "axios";
+import api from "../components/services/api"; // Import the axios instance with interceptors
 
 // Accessing the backend domain from environment variables
 const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
 
-// Create an axios instance
-const api = axios.create({
-  baseURL: `${backendDomain}/api/auth`,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  withCredentials: true,
-});
 
 // Sign-in function
 export const signIn = async (username, password) => {
   console.log("Sign-in initiated with username:", username);
   try {
-    const response = await api.post("/public/signin", { username, password });
+    const response = await api.post("/auth/public/signin", { username, password });
     console.log("Sign-in successful:", response.data);
 
     const { jwtToken, username: user } = response.data;
@@ -26,8 +18,10 @@ export const signIn = async (username, password) => {
     localStorage.setItem("JWT_TOKEN", jwtToken);
     localStorage.setItem("USERNAME", user);
     console.log("JWT token saved to localStorage:", jwtToken);
-
+    window.location.href = '/home';
     return response.data;
+
+
   } catch (error) {
     console.error(
       "Sign-in failed:",
@@ -41,7 +35,7 @@ export const signIn = async (username, password) => {
 export const signUp = async (userData) => {
   console.log("Sign-up initiated with data:", userData);
   try {
-    const response = await api.post("/public/signup", userData);
+    const response = await api.post("/auth/public/signup", userData);
     console.log("Sign-up successful:", response.data);
     return response.data; // Returns { message }
   } catch (error) {
@@ -76,7 +70,7 @@ export const handleLogout = async () => {
 export const signInWithGoogle = async () => {
   console.log("Google Sign-in initiated");
   try {
-    const response = await fetch (backendDomain + "oauth2/authorization/google");
+    const response = await api.get("/oauth2/authorization/google");
     console.log("Google Sign-in successful:", response.data);
     return response.data; // Returns { jwtToken, username }
   } catch (error) {

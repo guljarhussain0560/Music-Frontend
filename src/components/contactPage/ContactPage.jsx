@@ -2,8 +2,8 @@ import React from 'react';
 
 const ContactPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-purple-200 flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6 flex justify-center items-center">
+      <div className="max-w-2xl bg-white p-8 rounded-lg shadow-2xl transform transition duration-500 hover:scale-105">
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">Contact Us</h1>
         <p className="text-gray-700 text-center mb-8">
           We'd love to hear from you! Whether you have questions, feedback, or collaboration ideas, feel free to reach out.

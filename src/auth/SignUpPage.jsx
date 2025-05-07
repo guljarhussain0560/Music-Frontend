@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Slideshow from "../components/style/Slideshow";
-import { signUp, signInWithGoogle } from './authService'; 
+import { signUp, signInWithGoogle } from './authService';
+import { FcGoogle } from 'react-icons/fc';
 
 const SignupPage = () => {
   const [nameOfUser, setNameOfUser] = useState('');
@@ -8,6 +9,9 @@ const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
+  const jwtToken = localStorage.getItem('JWT_TOKEN');
+  const csrfToken = localStorage.getItem('CSRF_TOKEN');
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -15,24 +19,13 @@ const SignupPage = () => {
     try {
       const res = await signUp({ nameOfUser, email, username, password });
       console.log('SignUp Success:', res);
-      window.location.href = '/login'; // After signup, go to signin page
+      window.location.href = '/signin'; // After signup, go to signin page
     } catch (err) {
       console.error('SignUp Error:', err);
       setError(err.message || 'Signup failed');
     }
   };
 
-  const handleGoogleSignUp = async () => {
-    try {
-      const res = await signInWithGoogle();
-      console.log('Google SignUp Success:', res);
-      window.location.href = '/home'; // Redirect to home after successful signup
-    } catch (err) {
-      console.error('Google SignUp Error:', err);
-      setError(err.message || 'Google signup failed');
-    }
-
-  };
 
 
   return (
@@ -90,13 +83,24 @@ const SignupPage = () => {
           <div className="text-center my-4 text-gray-500">OR</div>
 
           {/* Google Sign Up Button */}
+          {/* Google Sign Up Button */}
           <button
             type="button"
-            onClick={handleGoogleSignUp}
-            className="w-full bg-red-500 text-white p-3 rounded-md font-semibold hover:bg-red-600"
+            onClick={() => {
+              try {
+                // Redirecting the user to the Google OAuth2 login page
+                window.location.href = `${backendDomain}/oauth2/authorization/google`;
+              } catch (err) {
+                console.error('Google SignUp Error:', err);
+                setError(err.message || 'Google signup failed');
+              }
+            }}
+            className="cursor-pointer w-full bg-white border p-3 rounded-md font-semibold flex items-center justify-center gap-3 hover:shadow-md transition"
           >
-            Continue with Google
+            <FcGoogle size={24} />
+            <span className="text-gray-700">Continue with Google</span>
           </button>
+
         </form>
 
         <div className="text-center mt-6">

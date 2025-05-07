@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../components/services/api";
 
 const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN; // Use your backend domain here
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -13,10 +15,11 @@ const OAuth2RedirectHandler = () => {
       // Store the token in localStorage
       localStorage.setItem("JWT_TOKEN", token);
 
-      // ✅ Immediately fetch user info using the token
-      fetch("http://localhost:8080/api/auth/me", {
+      console.log("Token being sent:", token);
+
+      api.get("/api/auth/me", {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
