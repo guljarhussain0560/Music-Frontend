@@ -9,7 +9,7 @@ const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
 export const signIn = async (username, password) => {
   console.log("Sign-in initiated with username:", username);
   try {
-    const response = await api.post("/auth/public/signin", { username, password });
+    const response = await api.post("/api/auth/public/signin", { username, password });
     console.log("Sign-in successful:", response.data);
 
     const { jwtToken, username: user } = response.data;
