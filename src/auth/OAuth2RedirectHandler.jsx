@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../components/services/api";
 
+
 const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN; // Use your backend domain here
+  const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN;
+  const csrfToken = localStorage.getItem("CSRF_TOKEN");
+
+
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -15,22 +19,20 @@ const OAuth2RedirectHandler = () => {
       // Store the token in localStorage
       localStorage.setItem("JWT_TOKEN", token);
 
+
       console.log("Token being sent:", token);
 
-      api.get("/api/auth/me", {
+      api.get(`${backendDomain}/api/auth/me`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          "X-XSRF-TOKEN": csrfToken,
+          "Authorization": `Bearer ${token}`
+        }
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch user");
-          return res.json();
-        })
-        .then((user) => {
+          const user = res.data;
           console.log("Logged-in user:", user);
-          // You can store user info in state, context, or Redux
-          localStorage.setItem("USER_DETAILS", JSON.stringify(user)); // Store user details
-          navigate("/home"); // go to home or dashboard
+          localStorage.setItem("USER_DETAILS", JSON.stringify(user));
+          navigate("/home");
         })
         .catch((err) => {
           console.error("User fetch failed", err);
