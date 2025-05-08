@@ -3,6 +3,7 @@ import axios from "axios";
 // Axios instance without interceptors
 const plainAxios = axios.create();
 
+
 // Axios instance with interceptors
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_BACKEND_DOMAIN}/api`,
