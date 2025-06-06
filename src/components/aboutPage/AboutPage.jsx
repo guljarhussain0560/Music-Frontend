@@ -79,6 +79,7 @@ const AboutPage = () => {
           </a>
         </div>
       </div>
+      
     </div>
   );
 };

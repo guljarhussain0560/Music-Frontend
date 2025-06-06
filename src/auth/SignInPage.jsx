@@ -41,6 +41,8 @@ const SignInPage = () => {
     }
   };
 
+  const [resetLoading, setResetLoading] = useState(false);
+
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
     setResetMessage('');
@@ -48,13 +50,15 @@ const SignInPage = () => {
       setResetMessage('Please enter your email.');
       return;
     }
-
+    setResetLoading(true);
     try {
       const response = await api.post('/auth/public/forgot-password', { email });
       setResetMessage(response.data.message || 'Password reset email sent successfully');
       setEmailSent(true);
     } catch (err) {
       setResetMessage(err.response?.data?.message || 'Error sending password reset email');
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -147,46 +151,55 @@ const SignInPage = () => {
                     setShowForgotPassword(false);
                     setEmailSent(false);
                     setEmail('');
-                  }}
-                  type="button"
-                  className="w-full bg-blue-600 text-white p-2 rounded-md font-semibold mt-4"
-                >
-                  Back to Sign In
-                </button>
-              </>
-            ) : (
-              <>
-                <h2 className="text-lg font-bold mb-2">Reset Password</h2>
-                <form onSubmit={handleForgotPasswordSubmit}>
-                  <input
+                    }}
+                    type="button"
+                    className="w-full bg-blue-600 text-white p-2 rounded-md font-semibold mt-4"
+                  >
+                    Back to Sign In
+                  </button>
+                  </>
+                ) : (
+                  <>
+                  <h2 className="text-lg font-bold mb-2">Reset Password</h2>
+                  <form onSubmit={handleForgotPasswordSubmit}>
+                    <input
                     type="email"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-2 mb-3 border rounded-md"
                     required
-                  />
-                  <button
+                    />
+                    <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white p-2 rounded-md font-semibold cursor-pointer"
+                    className={`w-full bg-blue-600 text-white p-2 rounded-md font-semibold cursor-pointer flex items-center justify-center ${resetLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    disabled={resetLoading}
+                    >
+                    {resetLoading ? (
+                      <span>
+                      <svg className="animate-spin h-5 w-5 mr-2 inline-block text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                      </svg>
+                      Sending...
+                      </span>
+                    ) : (
+                      'Send Reset Link'
+                    )}
+                    </button>
+                  </form>
+                  {resetMessage && <p className="mt-2 text-sm text-gray-700">{resetMessage}</p>}
+                  <button
+                    onClick={() => setShowForgotPassword(false)}
+                    type="button"
+                    className="w-full bg-blue-600 text-white p-2 rounded-md font-semibold mt-2 cursor-pointer"
                   >
-                    Send Reset Link
+                    Cancel
                   </button>
-                </form>
-                {resetMessage && <p className="mt-2 text-sm text-gray-700">{resetMessage}</p>}
-                <button
-                  onClick={() => setShowForgotPassword(false)}
-                  type="button"
-                  className="w-full bg-blue-600 text-white p-2 rounded-md font-semibold mt-2 cursor-pointer"
-                >
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Sign Up Prompt */}
+                  </>
+                )}
+                </div>
+              )}
         {!showForgotPassword && (
           <div className="text-center mt-6">
             <p className="text-gray-600">

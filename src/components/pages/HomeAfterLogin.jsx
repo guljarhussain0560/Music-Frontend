@@ -88,16 +88,16 @@ const HomeAfterLogin = () => {
   if (!userData) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col">
+    <div className="min-h-screen bg-slate-950 flex flex-col">
 
 
       <div className="flex-grow flex flex-col items-center justify-center py-20">
         <h1 className="text-5xl font-bold text-blue-600 mb-4 animate-pulse">Welcome, {userData.name}</h1>
-        <p className="text-xl text-gray-700">Here's your personalized music space!</p>
-        <p className="text-lg text-gray-600 mt-2">Upload an image to discover new music vibes.</p>
+        <p className="text-xl text-white">Here's your personalized music space!</p>
+        <p className="text-lg text-white  mt-2">Upload an image to discover new music vibes.</p>
         <div className="absolute top-4 right-4">
           <div
-            className="w-10 h-10 rounded-full overflow-hidden bg-blue-700 hover:bg-blue-900 text-white flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
+            className="w-10 h-10 rounded-full overflow-hidden bg-blue-600 hover:bg-blue-900 text-white flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
             onClick={() => setShowPopup(!showPopup)}
           >
             {userData.profileImageUrl && userData.profileImageUrl.trim() !== "" && !imageError ? (
@@ -152,7 +152,7 @@ const HomeAfterLogin = () => {
 
 
         <div className="flex flex-col items-center justify-center py-10">
-          <h2 className="text-3xl font-semibold mb-4 text-gray-800">Click upload image button to upload a photo</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-white">Click upload image button to upload a photo</h2>
           <form onSubmit={handleFormSubmit} className="flex flex-col items-center">
             <div className="relative mb-4">
               <input
@@ -165,10 +165,10 @@ const HomeAfterLogin = () => {
                 {image ? image.name : 'Upload Image'}
               </div>
             </div>
-            <h2 className="text-3xl font-semibold mb-4 text-gray-800">Click search music button to get music</h2>
+            <h2 className="text-3xl font-semibold mb-4 text-white">Click search music button to get music</h2>
             <button
               type="submit"
-              className={`px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-900 transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''
+              className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-900 cursor-pointer transition-colors ${loading ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               disabled={loading}
             >
@@ -185,8 +185,8 @@ const HomeAfterLogin = () => {
           )}
         </div>
         {songs.length > 0 && (
-          <div className="bg-gray-200 py-10 px-4 max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 text-center text-blue-800 ">Recommended Songs</h2>
+          <div className="bg-slate-950 py-10 px-4 max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold mb-6 text-center text-white">Recommended Songs</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {songs.map((song, index) => (
                 <div
@@ -218,7 +218,7 @@ const HomeAfterLogin = () => {
         )}
 
       </div>
-      <div className="w-full bg-cyan-500 mt-auto">
+      <div className="w-full mt-auto">
         <Footer />
       </div>
     </div>
