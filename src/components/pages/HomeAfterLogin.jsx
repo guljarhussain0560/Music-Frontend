@@ -76,7 +76,7 @@ const HomeAfterLogin = () => {
         }
       );
 
-      setSongs(response.data);
+      setSongs(response.data.songs || []);
     } catch (err) {
       setError('Error uploading image or processing failed.');
     } finally {
