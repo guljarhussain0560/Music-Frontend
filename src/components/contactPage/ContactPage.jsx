@@ -1,5 +1,8 @@
 import React from 'react';
 import api from '../services/api';
+import { Link } from 'react-router-dom';
+import MusicBackground from '../style/MusicBackground';
+import { FaChevronLeft, FaPaperPlane } from 'react-icons/fa';
 
 const ContactPage = () => {
   const handleSubmit = async (e) => {
@@ -19,20 +22,35 @@ const ContactPage = () => {
   const [sent, setSent] = React.useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6 flex justify-center items-center">
-      <div className="max-w-2xl bg-white p-8 rounded-lg shadow-2xl transform transition duration-500 hover:scale-105">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">Contact Us</h1>
-        <p className="text-gray-700 text-center mb-8">
-          We'd love to hear from you! Whether you have questions, feedback, or collaboration ideas, feel free to reach out.
+    <div className="min-h-screen text-neutral-350 p-6 flex flex-col justify-center items-center relative">
+      {/* Premium Ambient Background */}
+      <MusicBackground />
+
+      {/* Navigation Return Button */}
+      <div className="absolute top-6 left-6 z-30">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full bg-[#181818] border border-neutral-800 text-neutral-400 hover:text-white hover:bg-[#282828] hover:scale-102 transition-all"
+        >
+          <FaChevronLeft size={10} /> Back Home
+        </Link>
+      </div>
+
+      <div className="max-w-2xl bg-[#181818] border border-neutral-850 p-8 md:p-10 rounded-xl shadow-xl w-full text-neutral-250 z-20 my-12">
+        <h1 className="text-3xl font-extrabold text-center text-white tracking-tight mb-2">
+          Contact Us
+        </h1>
+        <p className="text-neutral-450 text-center mb-8 text-xs font-normal">
+          Have feedback or technical questions? Let us know and we will get back to you shortly.
         </p>
 
         {sent ? (
-          <div className="text-green-600 text-center font-semibold text-lg mb-6 animate-bounce">
+          <div className="text-green-400 bg-green-950/20 border border-green-900/30 p-4 rounded-xl text-center font-bold text-sm mb-6">
             🎉 Message sent successfully!
           </div>
         ) : (
           <form
-            className="space-y-6"
+            className="space-y-5"
             onSubmit={async (e) => {
               setSending(true);
               setSent(false);
@@ -46,56 +64,44 @@ const ContactPage = () => {
             }}
           >
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Name</label>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Name</label>
               <input
                 type="text"
                 name="name"
                 placeholder="Your Name"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-2.5 bg-[#121212] border border-neutral-850 text-white rounded-lg placeholder-neutral-550 focus:outline-none focus:ring-1 focus:ring-[#1db954] text-xs transition-all animate-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Email</label>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Email</label>
               <input
                 type="email"
                 name="email"
                 placeholder="Your Email"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-2.5 bg-[#121212] border border-neutral-850 text-white rounded-lg placeholder-neutral-550 focus:outline-none focus:ring-1 focus:ring-[#1db954] text-xs transition-all animate-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Message</label>
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2">Message</label>
               <textarea
                 rows="4"
                 name="message"
-                placeholder="Your Message"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Write your message here..."
+                className="w-full px-4 py-2.5 bg-[#121212] border border-neutral-850 text-white rounded-lg placeholder-neutral-550 focus:outline-none focus:ring-1 focus:ring-[#1db954] text-xs transition-all animate-none"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className={`w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:shadow-lg cursor-pointer flex items-center justify-center ${
-                sending ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-700'
-              }`}
+              className="w-full bg-[#1db954] hover:bg-[#1ed760] text-black font-bold py-2.5 px-4 rounded-full transition-all text-xs flex items-center justify-center gap-2 cursor-pointer"
               disabled={sending}
             >
-              {sending ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                  </svg>
-                  Sending...
-                </>
-              ) : (
-                'Send Message'
-              )}
+              {sending ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         )}
