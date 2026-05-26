@@ -36,10 +36,10 @@ const OAuth2RedirectHandler = () => {
         })
         .catch((err) => {
           console.error("User fetch failed", err);
-          navigate("/login?error=auth_failed");
+          navigate("/signin?error=auth_failed");
         });
     } else {
-      navigate("/login?error=missing_token");
+      navigate("/signin?error=missing_token");
     }
 
     setLoading(false);
