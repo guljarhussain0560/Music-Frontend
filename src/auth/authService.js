@@ -59,7 +59,7 @@ export const handleLogout = async () => {
 
     if (response.status === 200) {
       localStorage.removeItem('JWT_TOKEN');  // Remove the token after logout
-      window.location.href = '/login';  // Redirect user to login page
+      window.location.href = '/signin';  // Redirect user to login page
     }
   } catch (error) {
     console.error('Error during logout:', error);
