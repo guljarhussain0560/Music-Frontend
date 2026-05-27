@@ -309,9 +309,19 @@ const HomeAfterLogin = () => {
                     <p className="text-xs text-neutral-400 truncate">Artist: <span className="text-neutral-200">{song.artist}</span></p>
                     <p className="text-xs text-neutral-400 truncate">Album: <span className="text-neutral-300 font-light">{song.album}</span></p>
                     
-                    <span className="mt-3.5 text-[9px] font-bold tracking-wider uppercase bg-[#121212] text-[#1db954] border border-neutral-800 px-2.5 py-0.5 rounded-full w-fit">
-                      {song.genre}
-                    </span>
+                    <div className="flex gap-2 mt-3.5">
+                      <span className="text-[9px] font-bold tracking-wider uppercase bg-[#121212] text-[#1db954] border border-neutral-800 px-2.5 py-0.5 rounded-full w-fit">
+                        {song.genre}
+                      </span>
+                      <span className={`text-[9px] font-bold tracking-wider uppercase bg-[#121212] border px-2.5 py-0.5 rounded-full w-fit ${
+                        song.platform === 'Spotify' ? 'text-[#1db954] border-[#1db954]/30' :
+                        song.platform === 'YouTube' || song.platform === 'YouTube Music' ? 'text-[#ff0000] border-[#ff0000]/30' :
+                        song.platform === 'SoundCloud' ? 'text-[#ff5500] border-[#ff5500]/30' :
+                        'text-[#fa57c1] border-[#fa57c1]/30'
+                      }`}>
+                        {song.platform || 'Web'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
